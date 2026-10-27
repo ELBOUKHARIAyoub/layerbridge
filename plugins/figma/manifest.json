@@ -1,0 +1,13 @@
+{
+  "name": "LayerBridge",
+  "id": "layerbridge-dev",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["ws://localhost:61804", "ws://127.0.0.1:61804"],
+    "reasoning": "Talks to the local LayerBridge hub to move layers between design apps"
+  }
+}

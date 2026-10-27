@@ -1,0 +1,51 @@
+<!doctype html>
+<meta charset="utf-8">
+<div id="lb-root"></div>
+<script src="CSInterface.js"></script>
+<script src="panel-ui.js"></script>
+<script>
+  const cs = new CSInterface();
+  const HOST = cs.getHostEnvironment().appId; // "AEFT" or "ILST"
+  const evalJSX = (fn, arg) =>
+    new Promise((resolve) => cs.evalScript(`LB.${fn}(${JSON.stringify(JSON.stringify(arg ?? null))})`, resolve));
+
+  // Node is available because the manifest passes --enable-nodejs --mixed-context.
+  const nodeRequire = typeof cep_node !== "undefined" && cep_node.require ? cep_node.require : typeof require !== "undefined" ? require : null;
+
+  // After Effects and Illustrator import image *files*, so write each image to disk and
+  // hand the host script a path instead of megabytes of base64.
+  async function saveImages(layers) {
+    let saved = 0, lost = 0, dir = "";
+    if (JSON.stringify(layers).includes('"image":')) {
+      const proj = nodeRequire ? await evalJSX("projectDir") : "";
+      dir = proj ? proj + "/LayerBridge_images" : nodeRequire ? nodeRequire("os").tmpdir() + "/LayerBridge" : "";
+    }
+    const walk = (l) => {
+      if (l.type === "image" && l.image) {
+        if (nodeRequire) {
+          const fs = nodeRequire("fs"), path = nodeRequire("path");
+          fs.mkdirSync(dir, { recursive: true });
+          const file = path.join(dir, `lb_${Date.now()}_${saved++}.${l.image.format === "jpg" ? "jpg" : "png"}`);
+          fs.writeFileSync(file, Buffer.from(l.image.data, "base64"));
+          l.imagePath = file.replace(/\\/g, "/");
+        } else lost++;
+        delete l.image;
+      }
+      (l.children || []).forEach(walk);
+    };
+    layers.forEach(walk);
+    return lost;
+  }
+
+  LBPanel.mount({
+    host: HOST,
+    getSummary: async () => JSON.parse(await evalJSX("summary")),
+    getLayers: async () => JSON.parse(await evalJSX("selection")),
+    applyLayers: async (layers) => {
+      const lost = await saveImages(layers);
+      const msg = (await evalJSX("create", layers)) || "done";
+      return lost ? msg + `\n(${lost} image(s) skipped: Node is off)` : msg;
+    },
+    activate: () => evalJSX("bringToFront"),
+  });
+</script>

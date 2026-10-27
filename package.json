@@ -1,0 +1,23 @@
+{
+  "name": "layerbridge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local hub that moves layers between Adobe apps, Figma and FigCraft",
+  "bin": {
+    "layerbridge": "layerbridge.mjs"
+  },
+  "scripts": {
+    "start": "node layerbridge.mjs start --figcraft --open",
+    "setup": "node layerbridge.mjs setup",
+    "sync-ui": "node scripts/sync-ui.mjs",
+    "hub": "node hub/server.mjs",
+    "test": "node test/protocol.mjs && node test/adobe-mock.mjs && node test/ae-mock.mjs && node test/panel-ui.mjs && node test/installer.mjs && node test/smoke.mjs"
+  },
+  "dependencies": {
+    "ws": "8.18.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

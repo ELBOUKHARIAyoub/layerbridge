@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<div id="lb-root"></div>
+<script src="panel-ui.js"></script>
+<script>
+  // The sandbox (code.js) owns the Figma document; this iframe owns the socket and the UI.
+  // Requests go to code.js tagged with an id and are answered with the same id.
+  let summary = { count: 0 };
+  const waiting = new Map();
+  let nextReq = 1;
+  const ask = (msg) => new Promise((resolve, reject) => {
+    const req = nextReq++;
+    waiting.set(req, { resolve, reject });
+    parent.postMessage({ pluginMessage: { ...msg, req } }, "*");
+  });
+  onmessage = (e) => {
+    const m = e.data.pluginMessage;
+    if (!m) return;
+    if (m.type === "summary") { summary = m.summary; return; }
+    const w = waiting.get(m.req);
+    if (!w) return;
+    waiting.delete(m.req);
+    if (m.error) w.reject(new Error(m.error)); else w.resolve(m);
+  };
+
+  LBPanel.mount({
+    host: "FIGMA",
+    getSummary: async () => summary,
+    getLayers: async () => (await ask({ type: "getSelection" })).layers,
+    applyLayers: async (layers) => `${(await ask({ type: "create", layers })).count} layer(s) created in Figma`,
+  });
+</script>

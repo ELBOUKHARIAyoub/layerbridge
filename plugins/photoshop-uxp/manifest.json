@@ -1,0 +1,19 @@
+{
+  "id": "com.layerbridge.ps",
+  "name": "LayerBridge",
+  "version": "0.1.0",
+  "main": "index.html",
+  "manifestVersion": 5,
+  "host": { "app": "PS", "minVersion": "24.2.0" },
+  "entrypoints": [
+    {
+      "type": "panel",
+      "id": "com.layerbridge.ps.panel",
+      "label": { "default": "LayerBridge" },
+      "minimumSize": { "width": 230, "height": 200 }
+    }
+  ],
+  "requiredPermissions": {
+    "network": { "domains": ["ws://127.0.0.1:61804", "ws://localhost:61804"] }
+  }
+}
