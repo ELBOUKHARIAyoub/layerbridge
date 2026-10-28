@@ -38,9 +38,12 @@
 
   // Brand palette: see brand/brand.mjs. Buttons stay solid violet: white text on coral is too low contrast.
   var MARK = "__LB_MARK_SVG__";
+  var DARK = "--bg:#14121F;--fg:#ECE9FA;--mut:#A39FC0;--line:#3A3455;--card:#221E33;--acc:#6A4DFF;--cor:#FF6F8D;--ok:#3fb950;--err:#ff6b6b";
   var CSS =
     ":root{color-scheme:light dark;--bg:#FBFAFF;--fg:#1B1535;--mut:#6E6890;--line:#E2DDF5;--card:#F1EEFF;--acc:#5B3DF5;--cor:#E0436A;--ok:#2da44e;--err:#d1242f}" +
-    "@media (prefers-color-scheme:dark){:root{--bg:#14121F;--fg:#ECE9FA;--mut:#A39FC0;--line:#3A3455;--card:#221E33;--acc:#6A4DFF;--cor:#FF6F8D;--ok:#3fb950;--err:#ff6b6b}}" +
+    "@media (prefers-color-scheme:dark){:root:not([data-theme=light]){" + DARK + "}}" +
+    ":root[data-theme=dark]{color-scheme:dark;" + DARK + "}" +
+    ":root[data-theme=light]{color-scheme:light}" +
     "body{margin:0;background:var(--bg);color:var(--fg);font:12px/1.4 system-ui,-apple-system,Segoe UI,sans-serif}" +
     "#lb-root{padding:0 10px 10px}.lb-top{height:3px;margin:0 -10px 10px;background:linear-gradient(90deg,#5B3DF5,#FF5E7E)}" +
     ".lb-brandrow{display:flex;align-items:center;gap:8px}.lb-mark{width:24px;height:24px;display:inline-block}.lb-mark svg{width:24px;height:24px;display:block}" +
@@ -50,7 +53,7 @@
     ".lb-sel{margin:8px 0;padding:8px;border-radius:6px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc)}.lb-sel.empty{color:var(--mut);border-left-color:var(--line)}" +
     ".lb-h{margin:10px 0 4px;color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.04em}" +
     ".lb-row{display:flex;align-items:center;gap:6px;padding:6px 8px;margin:3px 0;border:1px solid var(--line);border-radius:6px}" +
-    ".lb-row .n{flex:1;min-width:0}.lb-row small{display:block;color:var(--mut);font-size:10.5px}.lb-row.off{opacity:.55}" +
+    ".lb-row .n{flex:1;min-width:0}.lb-row small{display:block;color:var(--mut);font-size:10.5px}.lb-row.off{opacity:.78}" +
     ".lb-row button{font:inherit;padding:4px 9px;border-radius:5px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}" +
     ".lb-row button.push{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}" +
     ".lb-row button:disabled{opacity:.4;cursor:default}" +

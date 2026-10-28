@@ -5,7 +5,9 @@
 <script src="../plugins/adobe-cep/panel-ui.js"></script>
 <script>
   // Preview only: runs the REAL panel UI against a pretend hub and a pretend selection.
-  const state = new URLSearchParams(location.search).get("state") || "ae";
+  const q = new URLSearchParams(location.search);
+  const state = q.get("state") || "ae";
+  if (q.get("theme")) document.documentElement.setAttribute("data-theme", q.get("theme"));
 
   const SCENES = {
     ae: {

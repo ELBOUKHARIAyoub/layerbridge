@@ -3,6 +3,14 @@
 <title>LayerBridge interface preview</title>
 <style>
   body { margin: 0; padding: 24px; background: #e9ebef; font: 14px system-ui, sans-serif; color: #222; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme=light]) body { background: #0C0B14; color: #ECE9FA }
+    :root:not([data-theme=light]) p.sub, :root:not([data-theme=light]) figcaption small { color: #A39FC0 }
+    :root:not([data-theme=light]) iframe { border-color: #2E2945; box-shadow: 0 2px 10px #0008 }
+  }
+  :root[data-theme=dark] body { background: #0C0B14; color: #ECE9FA }
+  :root[data-theme=dark] p.sub, :root[data-theme=dark] figcaption small { color: #A39FC0 }
+  :root[data-theme=dark] iframe { border-color: #2E2945; box-shadow: 0 2px 10px #0008 }
   h1 { font-size: 18px; margin: 0 0 4px } p.sub { margin: 0 0 18px; color: #666 }
   .wall { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start }
   figure { margin: 0 } figcaption { margin: 0 0 6px; font-weight: 600 } figcaption small { display: block; font-weight: 400; color: #666 }
@@ -17,3 +25,11 @@
   <figure><figcaption>After Effects<small>two Figma files open</small></figcaption><iframe src="panel.html?state=two"></iframe></figure>
   <figure><figcaption>When the hub isn't running<small>retries on its own</small></figcaption><iframe src="panel.html?state=offline"></iframe></figure>
 </div>
+<script>
+  // ?theme=dark or ?theme=light forces that theme in every panel; otherwise they follow the system.
+  const theme = new URLSearchParams(location.search).get("theme");
+  if (theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.querySelectorAll("iframe").forEach((f) => (f.src += "&theme=" + theme));
+  }
+</script>

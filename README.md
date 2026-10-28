@@ -19,7 +19,10 @@ run inside** After Effects, Illustrator, Photoshop or Figma, so expect fixes on 
 
 ## What it looks like
 
-![The LayerBridge panel in different situations: After Effects with three layers selected, Figma with nothing selected, Illustrator after a push, two Figma files open, and the hub offline](docs/interface.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/interface-dark.png">
+  <img alt="The LayerBridge panel in different situations: After Effects with three layers selected, Figma with nothing selected, Illustrator after a push, two Figma files open, and the hub offline" src="docs/interface.png">
+</picture>
 
 Every panel shows what you have selected, then lists the other apps. Open apps get **Push** and **Pull**
 buttons (Push is greyed out until something is selected); apps that aren't open are greyed out with how
@@ -27,7 +30,8 @@ to connect them.
 
 This picture is the real panel code running with a pretend hub and a pretend selection. To see it
 yourself, open `preview/index.html` in a browser. The real panels sit inside each program, so window
-frames and fonts differ, and the light/dark colours follow the program's theme.
+frames and fonts differ. The panels follow the program's light or dark theme (this page shows the matching
+picture for yours), and `preview/index.html?theme=dark` forces dark mode.
 
 ## How it works
 
