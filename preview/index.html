@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>LayerBridge interface preview</title>
+<style>
+  body { margin: 0; padding: 24px; background: #e9ebef; font: 14px system-ui, sans-serif; color: #222; }
+  h1 { font-size: 18px; margin: 0 0 4px } p.sub { margin: 0 0 18px; color: #666 }
+  .wall { display: flex; gap: 18px; flex-wrap: wrap; align-items: flex-start }
+  figure { margin: 0 } figcaption { margin: 0 0 6px; font-weight: 600 } figcaption small { display: block; font-weight: 400; color: #666 }
+  iframe { width: 300px; height: 520px; border: 1px solid #c8ccd2; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px #0002 }
+</style>
+<h1>LayerBridge: how the panel looks</h1>
+<p class="sub">The real panel code, shown with a pretend hub and a pretend selection. Each box is one panel inside a program.</p>
+<div class="wall">
+  <figure><figcaption>After Effects<small>3 layers selected, several apps open</small></figcaption><iframe src="panel.html?state=ae"></iframe></figure>
+  <figure><figcaption>Figma<small>nothing selected yet</small></figcaption><iframe src="panel.html?state=empty"></iframe></figure>
+  <figure><figcaption>Illustrator<small>after pushing, with a warning</small></figcaption><iframe src="panel.html?state=sent"></iframe></figure>
+  <figure><figcaption>After Effects<small>two Figma files open</small></figcaption><iframe src="panel.html?state=two"></iframe></figure>
+  <figure><figcaption>When the hub isn't running<small>retries on its own</small></figcaption><iframe src="panel.html?state=offline"></iframe></figure>
+</div>

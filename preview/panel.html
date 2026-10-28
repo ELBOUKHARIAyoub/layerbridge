@@ -1,0 +1,66 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>LayerBridge panel preview</title>
+<div id="lb-root"></div>
+<script src="../plugins/shared/panel-ui.js"></script>
+<script>
+  // Preview only: runs the REAL panel UI against a pretend hub and a pretend selection.
+  const state = new URLSearchParams(location.search).get("state") || "ae";
+
+  const SCENES = {
+    ae: {
+      host: "AEFT",
+      summary: { count: 3, kinds: { shapes: 2, text: 1 }, where: "Comp 1" },
+      hosts: [["FIGMA", 2], ["BLENDER", 3], ["FIGCRAFT", 0]],
+      status: "Ready",
+    },
+    empty: {
+      host: "FIGMA",
+      summary: { count: 0, hint: "Select layers in Figma to send them" },
+      hosts: [["AEFT", 1], ["ILST", 4]],
+      status: "Ready",
+    },
+    sent: {
+      host: "ILST",
+      summary: { count: 1, kinds: { groups: 1 }, where: "poster.ai" },
+      hosts: [["AEFT", 1], ["FIGMA", 2]],
+      status: "Sent (5 created)\ngradient approximated",
+    },
+    two: {
+      host: "AEFT",
+      summary: { count: 5, kinds: { shapes: 3, text: 1, images: 1 }, where: "Main" },
+      hosts: [["FIGMA", 2], ["FIGMA", 7], ["PHXS", 5]],
+      status: "Received 4 layers from Figma\n4 layer(s) created",
+    },
+    offline: { host: "AEFT", summary: { count: 2, kinds: { shapes: 2 }, where: "Comp 1" }, hosts: [], offline: true },
+  };
+  const scene = SCENES[state];
+
+  class FakeWS {
+    constructor() {
+      this.readyState = 1;
+      setTimeout(() => {
+        if (scene.offline) { this.readyState = 3; this.onclose && this.onclose(); return; }
+        this.onopen && this.onopen();
+      }, 30);
+    }
+    send(raw) {
+      const m = JSON.parse(raw);
+      if (m.type !== "hello") return;
+      const emit = (o) => this.onmessage && this.onmessage({ data: JSON.stringify(o) });
+      emit({ type: "welcome", id: scene.host + "-1" });
+      emit({ type: "hosts", hosts: [{ id: scene.host + "-1", host: scene.host }, ...scene.hosts.map(([h, n]) => ({ id: h + "-" + (n || 9), host: h }))] });
+      // show the scene's final status line after the panel says "Ready"
+      if (scene.status && scene.status !== "Ready") setTimeout(() => emit({ type: scene.status.startsWith("Sent") ? "ack" : "push", created: 5, warnings: ["gradient approximated"], from: "FIGMA-2", layers: [1, 2, 3, 4] }), 60);
+    }
+    close() {}
+  }
+  window.WebSocket = FakeWS;
+  // the "Received ..." scene needs applyLayers to answer like a real plugin
+  LBPanel.mount({
+    host: scene.host,
+    getSummary: async () => scene.summary,
+    getLayers: async () => [],
+    applyLayers: async () => "4 layer(s) created",
+  });
+</script>
