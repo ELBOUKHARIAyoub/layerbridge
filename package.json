@@ -11,13 +11,17 @@
     "start": "node layerbridge.mjs start --figcraft --open",
     "setup": "node layerbridge.mjs setup",
     "sync-ui": "node scripts/sync-ui.mjs",
+    "brand": "node scripts/make-brand.mjs",
     "hub": "node hub/server.mjs",
-    "test": "node test/protocol.mjs && node test/adobe-mock.mjs && node test/ae-mock.mjs && node test/panel-ui.mjs && node test/installer.mjs && node test/smoke.mjs"
+    "test": "node test/protocol.mjs && node test/adobe-mock.mjs && node test/ae-mock.mjs && node test/panel-ui.mjs && node test/brand.mjs && node test/installer.mjs && node test/smoke.mjs"
   },
   "dependencies": {
     "ws": "8.18.0"
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
   }
 }

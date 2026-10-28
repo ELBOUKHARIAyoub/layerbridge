@@ -30,6 +30,12 @@
           <Geometry>
             <Size><Width>260</Width><Height>200</Height></Size>
           </Geometry>
+          <Icons>
+            <Icon Type="Normal">./icons/icon-23.png</Icon>
+            <Icon Type="DarkNormal">./icons/icon-23.png</Icon>
+            <Icon Type="RollOver">./icons/icon-23.png</Icon>
+            <Icon Type="DarkRollOver">./icons/icon-23.png</Icon>
+          </Icons>
         </UI>
       </DispatchInfo>
     </Extension>

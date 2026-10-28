@@ -4,7 +4,7 @@ import fs from "node:fs";
 import vm from "node:vm";
 import { build } from "../scripts/sync-ui.mjs";
 
-const src = fs.readFileSync(new URL("../plugins/shared/panel-ui.js", import.meta.url), "utf8");
+const src = fs.readFileSync(new URL("../plugins/adobe-cep/panel-ui.js", import.meta.url), "utf8");
 const tick = (ms = 10) => new Promise((r) => setTimeout(r, ms));
 
 function load() {

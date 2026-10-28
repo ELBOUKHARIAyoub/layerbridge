@@ -10,6 +10,7 @@ import readline from "node:readline/promises";
 import { spawn } from "node:child_process";
 import { startHub } from "./hub/server.mjs";
 import { plan, apply } from "./installer/install.mjs";
+import { BRAND, markSvg } from "./brand/brand.mjs";
 
 const STATUS_PORT = 61806;
 const FIGCRAFT_PORT = 7979;
@@ -18,13 +19,19 @@ const cmd = args[0] && !args[0].startsWith("-") ? args[0] : "start";
 const flag = (f) => args.includes(f);
 
 const PAGE = `<!doctype html><meta charset="utf-8"><title>LayerBridge</title>
+<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(markSvg("lbf"))}">
 <style>
-  :root { color-scheme: light dark; font: 15px system-ui, sans-serif; }
-  body { max-width: 30rem; margin: 2rem auto; padding: 0 1rem; }
-  li { margin: .35rem 0; } .dot { display:inline-block; width:.6rem; height:.6rem; border-radius:50%; margin-right:.5rem; background:#2da44e }
-  .off { background:#999 } h1 { font-size: 1.3rem } small { opacity:.65 }
+  :root { color-scheme: light dark; --bg:${BRAND.paper}; --fg:${BRAND.ink}; --cor:#E0436A; --line:#E2DDF5; font: 15px system-ui, sans-serif; }
+  @media (prefers-color-scheme: dark) { :root { --bg:${BRAND.night}; --fg:#ECE9FA; --cor:#FF6F8D; --line:#3A3455; } }
+  body { max-width: 30rem; margin: 0 auto; padding: 0 1rem 2rem; background: var(--bg); color: var(--fg); }
+  body::before { content:""; display:block; height:4px; margin:0 -1rem 1.5rem; background: linear-gradient(90deg, ${BRAND.violet}, ${BRAND.coral}); }
+  header { display:flex; align-items:center; gap:.7rem; margin-bottom:1rem } header svg { width:40px; height:40px; display:block }
+  h1 { font-size: 1.5rem; margin:0; letter-spacing:-.02em } h1 i { font-style:normal; color: var(--cor) }
+  ul { list-style:none; padding:0 } li { margin:.35rem 0; padding:.55rem .7rem; border:1px solid var(--line); border-radius:8px }
+  .dot { display:inline-block; width:.6rem; height:.6rem; border-radius:50%; margin-right:.5rem; background:#2da44e }
+  .off { background:#999 } small { opacity:.65 }
 </style>
-<h1>LayerBridge</h1>
+<header>${markSvg("lbs")}<h1>Layer<i>Bridge</i></h1></header>
 <ul id="list"></ul><small id="note"></small>
 <script>
   const HOSTS = { AEFT: "After Effects", ILST: "Illustrator", PHXS: "Photoshop", FIGMA: "Figma", BLENDER: "Blender", FIGCRAFT: "FigCraft" };

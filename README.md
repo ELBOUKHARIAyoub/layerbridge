@@ -1,4 +1,9 @@
-# LayerBridge
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/lockup-dark.png">
+    <img alt="LayerBridge" src="docs/brand/lockup-light.png" width="380">
+  </picture>
+</h1>
 
 Move layers between design and motion apps on your own computer: **After Effects, Illustrator,
 Photoshop, Figma, Blender and FigCraft**. Select layers in one app, pick where they should go, press
